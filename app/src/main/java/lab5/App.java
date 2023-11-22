@@ -50,16 +50,21 @@ public class App {
         
         boolean work = true;
         while (work) {
-            
-            System.out.println("1. AllEmployees\n2. AllPatient\n3. PatientsUndergoingTreatmentWriteToCsv\n4. addPatient\n5. addEmployee\n6. adminAuthorization\n");
-            System.out.println("\n*------------\n");
+            System.out.println("=========================================");
+            System.out.println("||                Menu                 ||");
+            System.out.println("=========================================");
+            System.out.println("1. AllEmployees\n2. AllPatient\n3. PatientsUndergoingTreatmentWriteToCsv\n4. addPatient\n5. addEmployee\n6. adminAuthorization");
+            System.out.println("-----------------------------------------");
             System.out.println("7. AddRecord\n"+
             "8. Discharge\n"+
             "9. AddAssignment\n"+
-            "10. AssignmentCompletion\n");
-            System.out.println("\nesle. Exit");
+            "10. AssignmentCompletion");
+            System.out.println("-----------------------------------------");
+            System.out.println("else. Exit");
+            System.out.println("=========================================");
+            System.out.print("Input: ");
             switch (scanner.nextLine()) {
-
+                
 
                 case "1":
                 LOGGER.log(Level.INFO,"employees output request");
