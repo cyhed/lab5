@@ -39,6 +39,9 @@ public class DbHandler {
         System.out.println("Opened database successfully");
         
     }
+    protected  void finalize() throws SQLException{
+        connection.close();
+    }
 
     public List<Employee> getAllEmployees() {
  
@@ -57,6 +60,7 @@ public class DbHandler {
                                             resultSet.getString("middle_names"),
                                             resultSet.getString("job_title")));
             }
+            statement.close();
             // Возвращаем наш список
             return employees;
  
@@ -84,6 +88,7 @@ public class DbHandler {
                                             resultSet.getString("middle_names"),
                                             resultSet.getString("address")));
             }
+            statement.close();
             // Возвращаем наш список
             return patients;
  
@@ -110,6 +115,7 @@ public class DbHandler {
                                             resultSet.getString("date_of_application"),
                                             resultSet.getString("assignment_count")});
             }
+            statement.close();
             // Возвращаем наш список
             return patients;        
         } catch (SQLException e) {
@@ -123,7 +129,8 @@ public class DbHandler {
         try (Statement statement = this.connection.createStatement()) {            
                 
             statement.executeUpdate(String.format("INSERT INTO Patient (name,surname,middle_names,address ) VALUES  ('%s','%s','%s','%s')",
-                    patient.name, patient.surname, patient.middle_names, patient.address));           
+                    patient.name, patient.surname, patient.middle_names, patient.address));        
+            statement.close();   
            return true;
                
         } catch (SQLException e) {
@@ -139,7 +146,78 @@ public class DbHandler {
         try (Statement statement = this.connection.createStatement()) {            
                 
             statement.executeUpdate(String.format("INSERT INTO Employee (name,surname,middle_names,job_title ) VALUES  ('%s','%s','%s','%s')",
-            employee.name, employee.surname, employee.middle_names, employee.job_title));           
+            employee.name, employee.surname, employee.middle_names, employee.job_title));        
+            statement.close();
+           return true;
+               
+        } catch (SQLException e) {
+            e.printStackTrace();           
+            return false;           
+        } catch (java.lang.NullPointerException e) {
+            e.printStackTrace();           
+            return false;       
+        }
+    }
+    public boolean AddRecord(int idPatient,int idDisaese,int idEmployee,long date_of_applicatio, String description){
+        try (Statement statement = this.connection.createStatement()) {            
+            
+            statement.executeUpdate(String.format(
+                "INSERT INTO MedicalHistory (idPatient, idDisease, idEmployee, date_of_application, description) VALUES ('%s','%s','%s','%s','%s')",
+                idPatient,idDisaese,idEmployee,date_of_applicatio,description));  
+            statement.close();     
+           return true;
+               
+        } catch (SQLException e) {
+            e.printStackTrace();           
+            return false;           
+        } catch (java.lang.NullPointerException e) {
+            e.printStackTrace();           
+            return false;       
+        }
+    }
+
+
+    public boolean Discharge(int idRecord, long date){
+        try (Statement statement = this.connection.createStatement()) {  
+            statement.executeUpdate(String.format(
+                "UPDATE MedicalHistory SET date_discharge = '%s' WHERE idRecord = '%s';"  ,  date,idRecord));     
+            statement.close();
+           return true;
+               
+        } catch (SQLException e) {
+            e.printStackTrace();           
+            return false;           
+        } catch (java.lang.NullPointerException e) {
+            e.printStackTrace();           
+            return false;       
+        }
+    }
+    
+
+    public boolean AddAssignment(int idEmployee,int idRecord, String description){
+        try (Statement statement = this.connection.createStatement()) {            
+            
+            statement.executeUpdate(String.format(
+                "INSERT INTO Assignment (idEmployee, idRecord, description) VALUES ('%s','%s','%s')",
+                idEmployee,idRecord,description));  
+            statement.close();     
+           return true;
+               
+        } catch (SQLException e) {
+            e.printStackTrace();           
+            return false;           
+        } catch (java.lang.NullPointerException e) {
+            e.printStackTrace();           
+            return false;       
+        }
+    }
+
+    public boolean Completion(int idAssignment, long date){
+        try (Statement statement = this.connection.createStatement()) {  
+           
+            statement.executeUpdate(String.format(
+                "UPDATE Assignment SET date_completion = '%s' WHERE idAssignment = '%s';"  ,  date, idAssignment));     
+            statement.close();
            return true;
                
         } catch (SQLException e) {
