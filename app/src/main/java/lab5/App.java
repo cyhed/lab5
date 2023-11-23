@@ -51,7 +51,7 @@ public class App {
         boolean work = true;
         while (work) {
             System.out.println("=========================================");
-            System.out.println("||                Menu                 ||");
+            System.out.println("||                Меnu                 ||");
             System.out.println("=========================================");
             System.out.println("1. AllEmployees\n2. AllPatient\n3. PatientsUndergoingTreatmentWriteToCsv\n4. addPatient\n5. addEmployee\n6. adminAuthorization");
             System.out.println("-----------------------------------------");
@@ -168,17 +168,22 @@ public class App {
                 break;
 
                 case "7":
+                    LOGGER.log(Level.INFO,"add record to db");
                     AddRecord();
                     break;
 
                 case "8":
+                    LOGGER.log(Level.INFO,"add date Discharge to record");
                     Discharge();
                     break;
 
                 case "9":
+                    LOGGER.log(Level.INFO,"add assignment to db");
                     AddAssignment();
                     break;
                 case "10":
+                    LOGGER.log(Level.INFO,"add date Completion to record");
+                    
                     Completion();
                     break;
                 default:
