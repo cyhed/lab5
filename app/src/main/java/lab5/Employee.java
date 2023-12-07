@@ -1,6 +1,8 @@
 package lab5;
 
-public class Employee {
+import java.util.Comparator;
+
+public class Employee implements Comparable<Employee>{
     // Поля класса
     public int id;
     
@@ -26,5 +28,24 @@ public class Employee {
                 this.id, this.name, this.surname, this.middle_names, this.job_title);
     }
 
+    @Override
+    public int compareTo(Employee emp) {      
+        return (this.id - emp.id);
+    }
 
+    public static Comparator<Employee> AlphabeticallyComparator = new Comparator<Employee>() {
+ 
+        @Override
+        public int compare(Employee e1, Employee e2) {           
+            return (e1.name + e1.middle_names + e1.surname).compareTo(e2.name + e2.middle_names + e2.surname);
+        }
+    };
+
+    public static Comparator<Employee> JobComparator = new Comparator<Employee>() {
+ 
+        @Override
+        public int compare(Employee e1, Employee e2) {
+            return (e1.job_title).compareTo(e2.job_title);
+        }
+    };
 }

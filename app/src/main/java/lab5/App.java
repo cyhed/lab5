@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -51,9 +52,10 @@ public class App {
         boolean work = true;
         while (work) {
             System.out.println("=========================================");
-            System.out.println("||                Меnu                 ||");
+            System.out.println("||                Menu                 ||");
             System.out.println("=========================================");
-            System.out.println("1. AllEmployees\n2. AllPatient\n3. PatientsUndergoingTreatmentWriteToCsv\n4. addPatient\n5. addEmployee\n6. adminAuthorization");
+            System.out.println("0. AllAssingmentByDateComplete\n" + //
+                    "1. AllEmployees\n2. AllPatient\n3. PatientsUndergoingTreatmentWriteToCsv\n4. addPatient\n5. addEmployee\n6. adminAuthorization");
             System.out.println("-----------------------------------------");
             System.out.println("7. AddRecord\n"+
             "8. Discharge\n"+
@@ -65,20 +67,55 @@ public class App {
             System.out.print("Input: ");
             switch (scanner.nextLine()) {
                 
+                case "0":
+                LOGGER.log(Level.INFO,"assignments output request");
+                    List<String> assingments = dbHandler.AllAssingmentByDateComplete();
+                    for (String assingment : assingments) {
+                        System.out.println(assingment);
+                    }
+                    break;
 
                 case "1":
-                LOGGER.log(Level.INFO,"employees output request");
-                List<Employee> employees = dbHandler.getAllEmployees();
-                for (Employee employee : employees) {
-                    System.out.println(employee.toString());
+                {
+                    LOGGER.log(Level.INFO,"employees output request");
+                    List<Employee> employees = dbHandler.getAllEmployees();
+
+                    switch (scanner.nextLine()) {
+                        case "1":                                                
+                            break;
+                        case "2":
+                            employees.sort(Employee.AlphabeticallyComparator);                           
+                            break;
+                        case "3":                        
+                            employees.sort(Employee.JobComparator);                            
+                            break;
+                        default:
+                            System.out.println("return menu");
+                            break;
+                    }
+                    for (Employee employee : employees) {
+                        System.out.println(employee.toString());
+                    }
                 }
-                
                 break;
     
                 case "2":   
                 {         
                     LOGGER.log(Level.INFO,"patients output request");
-                    List<Patient> patients = dbHandler.getAllPatient();
+                    List<Patient>  patients = Collections.emptyList();
+                    switch (scanner.nextLine()) {
+                        case "1":
+                        {
+                            patients= dbHandler.getAllPatient();
+                        }
+                            break;
+                        case "2":
+                            patients = dbHandler.getAllPatientByDateOfApplication();
+                            break;
+                        default:
+                            break;
+                    }
+                    
                     for (Patient patient : patients) {
                         System.out.println(patient.toString());
                     }        
